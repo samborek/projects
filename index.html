@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Saverek</title>
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Saverek">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="screensaver-container">
+        <!-- Time Widget (Left Column) -->
+        <div class="widget time-widget">
+            <div class="time-content">
+                <div class="time-display" id="time-display">--:--</div>
+                <div class="date-display" id="date-display">--------</div>
+            </div>
+        </div>
+
+        <!-- Right Column Stack -->
+        <div class="right-stack">
+            <!-- Weather Widget -->
+            <div class="widget weather-widget">
+                <div class="main-value temp-display" id="temp-display">--°C</div>
+                <div class="widget-details">
+                    <div class="condition-display" id="condition-display">Loading...</div>
+                    <div class="weather-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Humidity</span>
+                            <span class="stat-value" id="humidity-value">--%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Wind</span>
+                            <span class="stat-value" id="wind-value">--km/h</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AQI Widget -->
+            <div class="widget aqi-widget">
+                <div class="main-value aqi-value" id="aqi-value">--</div>
+                <div class="widget-details">
+                    <div class="aqi-detail" id="aqi-detail">Loading AQI...</div>
+                </div>
+            </div>
+
+            <!-- Todoist/Calendar Widget -->
+            <div class="widget todoist-widget">
+                <div class="todoist-label">Today</div>
+                <div class="todoist-list-container">
+                    <div id="todoist-tasks" class="todoist-list">
+                        <div class="todoist-task">Fetching schedule...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Controls -->
+    <div class="floating-controls">
+        <div id="theme-toggle">
+            <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </div>
+        <div id="settings-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                </path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden">
+        <div class="settings-content">
+            <h2>Settings</h2>
+            <div class="input-group">
+                <label for="city-name">City (for Weather/AQI)</label>
+                <div class="input-with-suggestions">
+                    <input type="text" id="city-name" placeholder="e.g. Kraków" autocomplete="off">
+                    <div id="city-suggestions" class="suggestions-list hidden"></div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="todoist-key">Todoist API Key</label>
+                <input type="password" id="todoist-key" placeholder="Enter API Key">
+            </div>
+            <div class="input-group">
+                <label for="google-api-key">Google API Key</label>
+                <input type="password" id="google-api-key" placeholder="Enter API Key">
+            </div>
+            <div class="input-group">
+                <label for="calendar-id">Google Calendar ID</label>
+                <input type="text" id="calendar-id" placeholder="e.g. email@gmail.com">
+            </div>
+            <div class="input-group">
+                <label for="aqicn-key">AQICN API Key (legacy/unused)</label>
+                <input type="password" id="aqicn-key" placeholder="Enter API Key">
+            </div>
+            <div class="button-group">
+                <button id="save-settings">Save & Close</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
