@@ -328,4 +328,15 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-requestWakeLock();
+// Request lock on first interaction (required by many browsers)
+const initWakeLock = async () => {
+    await requestWakeLock();
+    // Remove listeners once successful
+    if (wakeLock) {
+        document.removeEventListener('click', initWakeLock);
+        document.removeEventListener('touchstart', initWakeLock);
+    }
+};
+
+document.addEventListener('click', initWakeLock);
+document.addEventListener('touchstart', initWakeLock);
