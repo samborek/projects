@@ -545,7 +545,7 @@ function Scene() {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
-      <Leva collapsed={false} />
+      <Leva collapsed={false} hidden={import.meta.env.PROD} />
       <Logo />
       <Credits />
 

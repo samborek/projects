@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build artifacts
+build_err.txt
+
+# AI agent directories
+.gemini
+.agent
+.agents
