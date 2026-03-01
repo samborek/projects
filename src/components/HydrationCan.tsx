@@ -67,7 +67,7 @@ export function HydrationCan({ labelTexture, ...props }: any) {
   const labelMaterialProps = useControls('Label Material', {
     roughness: { value: getSaved('labelRoughness', 0.4) as number, min: 0, max: 1 },
     metalness: { value: getSaved('labelMetalness', 0.1) as number, min: 0, max: 1 },
-    condensation: { value: getSaved('condensation', 0.5) as number, min: 0, max: 2 },
+    condensation: { value: getSaved('condensation', 0.12) as number, min: 0, max: 2 },
   })
 
   const bumpProps = useControls('Condensation Bump Map', {

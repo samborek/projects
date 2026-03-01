@@ -310,7 +310,7 @@ function Scene() {
   const { envPreset, envIntensity, envRotation } = envSettings
 
   const filterSettings = useControls('Label Filters', {
-    enableFilters: { value: getSaved('enableFilters', true) },
+    enableFilters: { value: getSaved('enableFilters', false) },
     labelSaturation: { value: getSaved('labelSaturation', 140), min: 0, max: 200, render: (get) => get('Label Filters.enableFilters') },
     labelHue: { value: getSaved('labelHue', -4), min: -180, max: 180, render: (get) => get('Label Filters.enableFilters') },
     labelBrightness: { value: getSaved('labelBrightness', 98), min: 0, max: 200, render: (get) => get('Label Filters.enableFilters') },
@@ -321,21 +321,21 @@ function Scene() {
   const waterSpiralSettings = useControls('Water Spiral', {
     waterVisible: getSaved('waterVisible', true),
     waterNumDroplets: { value: getSaved('waterNumDroplets', 83), min: 10, max: 400, step: 1 },
-    waterRadius: { value: getSaved('waterRadius', 0.32), min: 0.01, max: 2.0, step: 0.01 },
-    waterHeight: { value: getSaved('waterHeight', 1.74), min: 0.1, max: 5.0, step: 0.01 },
-    waterSpeed: { value: getSaved('waterSpeed', 0.3), min: 0, max: 10.0, step: 0.01 },
-    waterMarchingScale: { value: getSaved('waterMarchingScale', 9.5), min: 1, max: 100, step: 0.5 },
-    waterResolution: { value: getSaved('waterResolution', 106), min: 20, max: 150, step: 1 },
+    waterRadius: { value: getSaved('waterRadius', 0.4), min: 0.01, max: 2.0, step: 0.01 },
+    waterHeight: { value: getSaved('waterHeight', 1.33), min: 0.1, max: 5.0, step: 0.01 },
+    waterSpeed: { value: getSaved('waterSpeed', 0.28), min: 0, max: 10.0, step: 0.01 },
+    waterMarchingScale: { value: getSaved('waterMarchingScale', 8), min: 1, max: 100, step: 0.5 },
+    waterResolution: { value: getSaved('waterResolution', 131), min: 20, max: 150, step: 1 },
     waterIsolation: { value: getSaved('waterIsolation', 104), min: 10, max: 500, step: 1 },
     waterBlobStrength: { value: getSaved('waterBlobStrength', 0.11), min: 0.01, max: 2.0, step: 0.01 },
     waterBlobSubtract: { value: getSaved('waterBlobSubtract', 9), min: 0, max: 100, step: 1 },
     waterNoiseScale: { value: getSaved('waterNoiseScale', 0.092), min: 0, max: 1.0, step: 0.001 },
     waterRotationSpeed: { value: getSaved('waterRotationSpeed', 0.2), min: -20, max: 20, step: 0.1 },
     waterSpiralTwists: { value: getSaved('waterSpiralTwists', 1.7), min: 0.1, max: 20, step: 0.1 },
-    waterPositionX: { value: getSaved('waterPositionX', 5.6), min: -50, max: 50, step: 0.1 },
-    waterPositionY: { value: getSaved('waterPositionY', 2.7), min: -50, max: 50, step: 0.1 },
-    waterPositionZ: { value: getSaved('waterPositionZ', 5.8), min: -50, max: 50, step: 0.1 },
-    waterDistortionStrength: { value: getSaved('waterDistortionStrength', 39.4), min: 0, max: 50.0, step: 0.1 },
+    waterPositionX: { value: getSaved('waterPositionX', 6.2), min: -50, max: 50, step: 0.1 },
+    waterPositionY: { value: getSaved('waterPositionY', 5.9), min: -50, max: 50, step: 0.1 },
+    waterPositionZ: { value: getSaved('waterPositionZ', 8.3), min: -50, max: 50, step: 0.1 },
+    waterDistortionStrength: { value: getSaved('waterDistortionStrength', 0), min: 0, max: 50.0, step: 0.1 },
     waterDistortionArea: { value: getSaved('waterDistortionArea', 0.05), min: 0.01, max: 2.0, step: 0.01 },
   })
 
