@@ -1,0 +1,380 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #050505;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: white;
+}
+
+/* Animated background layer behind everything */
+.animated-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+
+.ui-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 30px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.upload-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.upload-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+@font-face {
+  font-family: 'Gazpacho';
+  src: url('./assets/fonts/GazpachoMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('./assets/fonts/GeistMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Main UI container for shared variables and layout */
+.app-ui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ─── Typography: Split left/right around the can ─────────────────── */
+.typography-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Left panel: big number (right-aligned, pushed by canScale) */
+.text-left {
+  position: absolute;
+  left: var(--text-side-padding, 60px);
+  right: calc(50% + calc(var(--can-scale, 0.5) * var(--text-padding, 360px)));
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+  z-index: 1;
+}
+
+.text-left h1 {
+  font-family: 'Gazpacho', serif;
+  font-size: 12rem;
+  color: var(--color-h1);
+  margin: 0;
+  line-height: var(--text-line-height, 0.8);
+  letter-spacing: -3px;
+}
+
+/* Right panel: body text (left-aligned, pushed by canScale) */
+.text-right {
+  position: absolute;
+  left: calc(50% + calc(var(--can-scale, 0.5) * var(--text-padding, 360px)));
+  right: var(--text-side-padding, 60px);
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: left;
+  z-index: 1;
+}
+
+.text-right p {
+  font-family: 'Geist', sans-serif;
+  font-size: 4.2rem;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  color: var(--color-p);
+  letter-spacing: -1px;
+  max-width: 14ch;
+}
+
+.text-left .highlight,
+.text-right .highlight {
+  color: var(--color-link);
+  text-decoration: none;
+  text-decoration-color: var(--color-link);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 8px;
+}
+
+/* ─── CTA Button (standalone, bottom-center) ──────────────────────── */
+.cta-button {
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 21px 40px;
+  border-radius: 88px;
+  background: var(--color-btn-bg);
+  color: var(--color-btn-text);
+  font-family: 'Gazpacho', serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 247px;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.cta-button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* ─── Per-line Wavy Clip-Reveal Animations ────────────────────────── */
+
+/* Each text element is wrapped in a .text-line that clips overflow */
+.text-line {
+  overflow: hidden;
+  display: block;
+}
+
+.text-line-inner {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ── Entrance: lines slide up from below with staggered delays ── */
+@keyframes lineRevealIn {
+  0% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ── Exit: lines slide down and fade ── */
+@keyframes lineRevealOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+
+/* Entrance class: stagger each line with --line-i custom prop */
+.text-left.text-enter .text-line-inner,
+.text-right.text-enter .text-line-inner {
+  animation: lineRevealIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--line-i, 0) * 0.12s);
+  transform: translateY(120%);
+  opacity: 0;
+}
+
+/* Exit class */
+.text-left.text-exit .text-line-inner,
+.text-right.text-exit .text-line-inner {
+  animation: lineRevealOut 0.4s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  animation-delay: calc(var(--line-i, 0) * 0.06s);
+}
+
+/* ─── Navigation Arrows (circular, color-burn) ────────────────────── */
+
+/* ─── Bottom Navigation Group ─────────────────────────────────────── */
+.bottom-nav-group {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 200;
+  pointer-events: auto;
+}
+
+.nav-arrow {
+  width: 90px;
+  height: 60px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.15);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.nav-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-arrow path {
+  stroke: white;
+}
+
+.nav-arrow:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
+}
+
+.nav-arrow:active {
+  transform: scale(0.95);
+}
+
+/* ─── Navigation Hint ─────────────────────────────────────────────── */
+.nav-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Geist', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: white;
+  opacity: 0.25;
+  z-index: 100;
+  pointer-events: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ─── Slide Indicator Dots (hidden per Figma) ─────────────────────── */
+
+.slide-dots {
+  display: none;
+}
+
+/* ─── Branding UI (Logo & Credits) ────────────────────────────────── */
+
+.app-logo {
+  position: absolute;
+  top: var(--text-side-padding, 40px);
+  left: var(--text-side-padding, 40px);
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.app-logo svg {
+  width: 120px;
+  height: auto;
+}
+
+.app-credits {
+  position: absolute;
+  top: var(--text-side-padding, 40px);
+  right: var(--text-side-padding, 40px);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.app-credits a {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  opacity: 0.6;
+  text-transform: lowercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.app-credits a:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ─── Responsive Navigation (Mobile) ─────────────────────────────── */
+@media (max-width: 768px) {
+  .bottom-nav-group {
+    bottom: 85px;
+    gap: 20px;
+  }
+
+  .nav-arrow {
+    width: 60px;
+    height: 44px;
+  }
+
+  .nav-arrow:hover {
+    transform: scale(1.05);
+  }
+
+  .cta-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    min-width: 200px;
+  }
+
+  .nav-hint {
+    bottom: 25px;
+    opacity: 0.4;
+  }
+}
