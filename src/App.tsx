@@ -268,7 +268,7 @@ function Scene() {
     return h ? JSON.parse(h) : []
   })
 
-  console.log("--- DEBUG INIT ---", { loadedWaterX: getSaved('waterPositionX', 5.6) })
+  console.log("--- DEBUG INIT ---", { loadedWaterX: getSaved('waterPositionX', 6.199999999999999) })
 
   const canSettings = useControls('Can Animation & Position', {
     canRotation: { value: getSaved('canRotation', [7.9, 2.7, 3.1]), step: 0.1 },
@@ -321,9 +321,9 @@ function Scene() {
   const waterSpiralSettings = useControls('Water Spiral', {
     waterVisible: getSaved('waterVisible', true),
     waterNumDroplets: { value: getSaved('waterNumDroplets', 83), min: 10, max: 400, step: 1 },
-    waterRadius: { value: getSaved('waterRadius', 0.4), min: 0.01, max: 2.0, step: 0.01 },
+    waterRadius: { value: getSaved('waterRadius', 0.39999999999999997), min: 0.01, max: 2.0, step: 0.01 },
     waterHeight: { value: getSaved('waterHeight', 1.33), min: 0.1, max: 5.0, step: 0.01 },
-    waterSpeed: { value: getSaved('waterSpeed', 0.28), min: 0, max: 10.0, step: 0.01 },
+    waterSpeed: { value: getSaved('waterSpeed', 0.2799999999999999), min: 0, max: 10.0, step: 0.01 },
     waterMarchingScale: { value: getSaved('waterMarchingScale', 8), min: 1, max: 100, step: 0.5 },
     waterResolution: { value: getSaved('waterResolution', 131), min: 20, max: 150, step: 1 },
     waterIsolation: { value: getSaved('waterIsolation', 104), min: 10, max: 500, step: 1 },
@@ -332,9 +332,9 @@ function Scene() {
     waterNoiseScale: { value: getSaved('waterNoiseScale', 0.092), min: 0, max: 1.0, step: 0.001 },
     waterRotationSpeed: { value: getSaved('waterRotationSpeed', 0.2), min: -20, max: 20, step: 0.1 },
     waterSpiralTwists: { value: getSaved('waterSpiralTwists', 1.7), min: 0.1, max: 20, step: 0.1 },
-    waterPositionX: { value: getSaved('waterPositionX', 6.2), min: -50, max: 50, step: 0.1 },
-    waterPositionY: { value: getSaved('waterPositionY', 5.9), min: -50, max: 50, step: 0.1 },
-    waterPositionZ: { value: getSaved('waterPositionZ', 8.3), min: -50, max: 50, step: 0.1 },
+    waterPositionX: { value: getSaved('waterPositionX', 6.199999999999999), min: -50, max: 50, step: 0.1 },
+    waterPositionY: { value: getSaved('waterPositionY', 5.8999999999999995), min: -50, max: 50, step: 0.1 },
+    waterPositionZ: { value: getSaved('waterPositionZ', 8.299999999999999), min: -50, max: 50, step: 0.1 },
     waterDistortionStrength: { value: getSaved('waterDistortionStrength', 0), min: 0, max: 50.0, step: 0.1 },
     waterDistortionArea: { value: getSaved('waterDistortionArea', 0.05), min: 0.01, max: 2.0, step: 0.01 },
   })
