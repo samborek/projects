@@ -225,8 +225,12 @@ function Preloader({ isReady, needsReload, setNeedsReload }: { isReady: boolean,
     if (needsReload) {
       setHidden(false)
       setFade(false)
+
+      // Auto-clear needsReload after a moment so it doesn't block completion permanently if progress is already 100
+      const t = setTimeout(() => setNeedsReload(false), 100)
+      return () => clearTimeout(t)
     }
-  }, [needsReload])
+  }, [needsReload, setNeedsReload])
 
   const complete = progress >= 100 && isReady && !needsReload
 
@@ -235,11 +239,10 @@ function Preloader({ isReady, needsReload, setNeedsReload }: { isReady: boolean,
       setFade(true)
       const timer = setTimeout(() => {
         setHidden(true)
-        setNeedsReload(false)
       }, 1200)
       return () => clearTimeout(timer)
     }
-  }, [complete, setNeedsReload])
+  }, [complete])
 
   if (hidden) return null
 
