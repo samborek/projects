@@ -21,7 +21,7 @@ bigNumber: '7.31%<br/>APR'
 canColor: "#0a1628"
 bgColor: "#98C256"
 labelImage: "/labels/Hollar Light.png"
-footer: "Get Hollar."
+footer: "Get Hollar"
 footerUrl: "https://hollar.com"
 colorH1: "#ffffff"
 colorP: "#ffffffff"
