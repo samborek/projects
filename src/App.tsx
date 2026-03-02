@@ -248,10 +248,6 @@ function Preloader({ isReady, needsReload, setNeedsReload }: { isReady: boolean,
 
   return (
     <div className={`app-preloader ${fade ? 'fade-out' : ''}`}>
-      <div className="preloader-blobs">
-        <div className="blob blob-1"></div>
-        <div className="blob blob-2"></div>
-      </div>
       <div className="preloader-content">
         <div className="preloader-title">H Y D R A T I O N</div>
         <div className="progress-bar-container">
