@@ -383,8 +383,8 @@ input[type="file"] {
   }
 
   .text-right p {
-    font-size: 1.4rem;
-    max-width: 28ch;
+    font-size: 1.8rem;
+    max-width: 20ch;
     margin: 0 auto;
     line-height: 1.2;
     letter-spacing: -0.3px;

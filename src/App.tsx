@@ -635,13 +635,15 @@ function Scene() {
 
           {/* Floating and spinning */}
           <Float speed={floatSpeed as unknown as number} rotationIntensity={1} floatIntensity={floatIntensity as unknown as number} floatingRange={[-0.5, 0.5]}>
-            <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={isMobile ? 0.2 : (canScale as unknown as number)}>
+            <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={isMobile ? 0.30 : (canScale as unknown as number)}>
               <animated.group
                 rotation-x={SPIN_AXIS === 'x' ? spinY : 0}
                 rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
                 rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
               >
+                <gridHelper args={[10, 10]} />
                 <PresentationControls
+                  key={spinCount}
                   global={false}
                   cursor={true}
                   snap={false}
