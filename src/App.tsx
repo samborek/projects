@@ -722,12 +722,14 @@ function Scene() {
                     </group>
                   </PresentationControls>
                 </animated.group>
-                {/* Water spiral is independent of slide spin transitions */}
-                <WaterSpiral
-                  spiralControls={waterSpiralSettings}
-                  materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
-                  globalBg={slide.bgColor || '#000000'}
-                />
+                {/* Water spiral is independent of slide spin transitions - disabled on mobile */}
+                {!isMobile && (
+                  <WaterSpiral
+                    spiralControls={waterSpiralSettings}
+                    materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
+                    globalBg={slide.bgColor || '#000000'}
+                  />
+                )}
               </group>
             </Float>
           </Canvas>
