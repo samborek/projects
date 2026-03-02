@@ -18,7 +18,7 @@ type GLTFResult = GLTF & {
   materials: {}
 }
 
-export function HydrationCan({ labelTexture, ...props }: any) {
+export function HydrationCan({ labelTexture, isMobile, ...props }: any) {
   const { scene } = useGLTF('/hydration_can.gltf')
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
   const { nodes } = useGraph(clone) as unknown as GLTFResult
@@ -151,7 +151,8 @@ export function HydrationCan({ labelTexture, ...props }: any) {
       const simplex = new SimplexNoise()
 
       // We draw more drops for the bump map than the mesh to get a fine misty base
-      for (let i = 0; i < amount * 1.5; i++) {
+      const actualAmount = isMobile ? amount * 0.5 : amount * 1.5
+      for (let i = 0; i < actualAmount; i++) {
         const x = Math.random() * 1024
         const y = Math.random() * 1024
 
@@ -286,7 +287,9 @@ export function HydrationCan({ labelTexture, ...props }: any) {
     const nA = new THREE.Vector3(), nB = new THREE.Vector3(), nC = new THREE.Vector3()
     const sampledPos = new THREE.Vector3(), sampledNormal = new THREE.Vector3()
 
-    for (let i = 0; i < amount; i++) {
+    const actualAmount = isMobile ? Math.min(amount, 800) : amount
+
+    for (let i = 0; i < actualAmount; i++) {
       // Pick a random triangle weighted by area
       const r = Math.random()
       let triIdx = 0

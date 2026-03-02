@@ -107,13 +107,14 @@ function AnimatedBackground({ prevColor, currentColor, progress }: { prevColor: 
 }
 
 // ─── Liquid Texture Animator ─────────────────────────────────────────
-function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTexture }: any) {
+function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTexture, isMobile }: any) {
   const texRef = useRef<THREE.CanvasTexture | null>(null)
 
   useEffect(() => {
+    const size = isMobile ? 1024 : 2048
     const canvas = document.createElement('canvas')
-    canvas.width = 2048
-    canvas.height = 2048
+    canvas.width = size
+    canvas.height = size
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
     tex.flipY = false
@@ -136,16 +137,18 @@ function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTe
 
     // Draw current slide masked by a crazy expanding wavy circle
     if (p > 0) {
+      const size = isMobile ? 1024 : 2048
+      const halfSize = size / 2
       // We use a temporary canvas to handle the blurred masking
       const tempCanvas = document.createElement('canvas')
-      tempCanvas.width = 2048
-      tempCanvas.height = 2048
+      tempCanvas.width = size
+      tempCanvas.height = size
       const tCtx = tempCanvas.getContext('2d')
       if (tCtx) {
         tCtx.beginPath()
-        const cx = 1024
-        const cy = 1024
-        const baseRadius = p * 2400
+        const cx = halfSize
+        const cy = halfSize
+        const baseRadius = p * (size * 1.17)
 
         for (let i = 0; i <= Math.PI * 2 + 0.05; i += 0.02) {
           const intensity = Math.sin(p * Math.PI) * 120
@@ -470,9 +473,10 @@ function Scene() {
     async function loadSlideImages() {
       const canvases = await Promise.all(
         SLIDES.map(async (slide: any) => {
+          const size = isMobile ? 1024 : 2048
           const canvas = document.createElement('canvas')
-          canvas.width = 2048
-          canvas.height = 2048
+          canvas.width = size
+          canvas.height = size
           const ctx = canvas.getContext('2d')!
 
           if (slide.labelImage) {
@@ -488,15 +492,15 @@ function Scene() {
             } else {
               ctx.filter = 'none'
             }
-            ctx.drawImage(img, 0, 0, 2048, 2048)
+            ctx.drawImage(img, 0, 0, size, size)
           } else if (slide.labelGradient) {
             // Fallback: gradient
-            const grad = ctx.createLinearGradient(0, 0, 2048, 2048)
+            const grad = ctx.createLinearGradient(0, 0, size, size)
             grad.addColorStop(0, slide.labelGradient[0])
             grad.addColorStop(0.5, slide.labelGradient[1])
             grad.addColorStop(1, slide.labelGradient[2])
             ctx.fillStyle = grad
-            ctx.fillRect(0, 0, 2048, 2048)
+            ctx.fillRect(0, 0, size, size)
           }
 
           return canvas
@@ -508,7 +512,7 @@ function Scene() {
 
     loadSlideImages()
     return () => { cancelled = true }
-  }, [enableFilters, labelSaturation, labelHue, labelBrightness, labelContrast])
+  }, [enableFilters, labelSaturation, labelHue, labelBrightness, labelContrast, isMobile])
 
   // ─── Slide Navigation ──────────────────────────────────────────────
   const lastNavTime = useRef(0)
@@ -616,7 +620,7 @@ function Scene() {
 
         {/* Layer 5: 3D Canvas (transparent, can only) */}
         <div className="scene-container" style={{ zIndex: 5 }}>
-          <Canvas camera={{ position: [0, 0, 12], fov: isMobile ? 55 : 45 }} gl={{ alpha: true, antialias: true }} dpr={[1, 1.5]} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
+          <Canvas camera={{ position: [0, 0, 12], fov: isMobile ? 55 : 45 }} gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }} dpr={isMobile ? 1 : [1, 2]} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
 
             <ambientLight intensity={0.5} />
             <rectAreaLight
@@ -642,7 +646,7 @@ function Scene() {
                   rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
                   rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
                 >
-                  <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
+                  <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} isMobile={isMobile} />
                   <PresentationControls
                     key={spinCount}
                     global={false}
@@ -653,13 +657,16 @@ function Scene() {
                     polar={[0, 0]}
                   >
                     <group rotation={canRotation as [number, number, number]}>
-                      <HydrationCan labelTexture={texture} />
+                      <HydrationCan labelTexture={texture} isMobile={isMobile} />
                     </group>
                   </PresentationControls>
                 </animated.group>
                 {/* Water spiral is independent of slide spin transitions */}
                 <WaterSpiral
-                  spiralControls={waterSpiralSettings}
+                  spiralControls={{
+                    ...waterSpiralSettings,
+                    waterResolution: isMobile ? Math.min(waterSpiralSettings.waterResolution as unknown as number, 50) : waterSpiralSettings.waterResolution
+                  }}
                   materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
                   globalBg={slide.bgColor || '#000000'}
                 />
