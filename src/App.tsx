@@ -641,7 +641,6 @@ function Scene() {
                 rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
                 rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
               >
-                <gridHelper args={[10, 10]} />
                 <PresentationControls
                   key={spinCount}
                   global={false}
