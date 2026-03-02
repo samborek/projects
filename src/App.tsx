@@ -642,7 +642,6 @@ function Scene() {
                 rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
               >
                 <PresentationControls
-                  key={spinCount}
                   global={false}
                   cursor={true}
                   snap={false}
