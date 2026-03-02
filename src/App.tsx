@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { PresentationControls, Environment, Float } from '@react-three/drei'
+import { PresentationControls, Environment, Float, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 import { HydrationCan } from './components/HydrationCan'
 import { WaterSpiral } from './components/WaterSpiral'
@@ -213,6 +213,36 @@ function Credits() {
       <a href="https://samborek.xyz/" target="_blank" rel="noopener noreferrer">
         made by sambø
       </a>
+    </div>
+  )
+}
+
+// ─── Preloader ───────────────────────────────────────────────────────
+function Preloader({ isReady }: { isReady: boolean }) {
+  const { progress } = useProgress()
+  const [hidden, setHidden] = useState(false)
+  const [fade, setFade] = useState(false)
+
+  const complete = progress >= 100 && isReady
+
+  useEffect(() => {
+    if (complete) {
+      setFade(true)
+      const timer = setTimeout(() => setHidden(true), 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [complete])
+
+  if (hidden) return null
+
+  return (
+    <div className={`app-preloader ${fade ? 'fade-out' : ''}`}>
+      <div className="preloader-content">
+        <div className="preloader-title">H Y D R A T I O N</div>
+        <div className="progress-bar-container">
+          <div className="progress-bar-fill" style={{ width: `${Math.max(progress, 5)}%` }} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -567,6 +597,8 @@ function Scene() {
         currentColor={slide.bgColor || '#000000'}
         progress={transitionProgress}
       />
+
+      <Preloader isReady={slideCanvases.length > 0} />
 
       <div
         className="app-ui-container"
