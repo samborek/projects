@@ -107,14 +107,13 @@ function AnimatedBackground({ prevColor, currentColor, progress }: { prevColor: 
 }
 
 // ─── Liquid Texture Animator ─────────────────────────────────────────
-function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTexture, isMobile }: any) {
+function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTexture }: any) {
   const texRef = useRef<THREE.CanvasTexture | null>(null)
 
   useEffect(() => {
-    const size = isMobile ? 1024 : 2048
     const canvas = document.createElement('canvas')
-    canvas.width = size
-    canvas.height = size
+    canvas.width = 2048
+    canvas.height = 2048
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
     tex.flipY = false
@@ -137,18 +136,16 @@ function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTe
 
     // Draw current slide masked by a crazy expanding wavy circle
     if (p > 0) {
-      const size = isMobile ? 1024 : 2048
-      const halfSize = size / 2
       // We use a temporary canvas to handle the blurred masking
       const tempCanvas = document.createElement('canvas')
-      tempCanvas.width = size
-      tempCanvas.height = size
+      tempCanvas.width = 2048
+      tempCanvas.height = 2048
       const tCtx = tempCanvas.getContext('2d')
       if (tCtx) {
         tCtx.beginPath()
-        const cx = halfSize
-        const cy = halfSize
-        const baseRadius = p * (size * 1.17)
+        const cx = 1024
+        const cy = 1024
+        const baseRadius = p * 2400
 
         for (let i = 0; i <= Math.PI * 2 + 0.05; i += 0.02) {
           const intensity = Math.sin(p * Math.PI) * 120
@@ -218,20 +215,31 @@ function Credits() {
 }
 
 // ─── Preloader ───────────────────────────────────────────────────────
-function Preloader({ isReady }: { isReady: boolean }) {
+function Preloader({ isReady, needsReload, setNeedsReload }: { isReady: boolean, needsReload: boolean, setNeedsReload: (v: boolean) => void }) {
   const { progress } = useProgress()
   const [hidden, setHidden] = useState(false)
   const [fade, setFade] = useState(false)
 
-  const complete = progress >= 100 && isReady
+  // Reset when a reload is requested
+  useEffect(() => {
+    if (needsReload) {
+      setHidden(false)
+      setFade(false)
+    }
+  }, [needsReload])
+
+  const complete = progress >= 100 && isReady && !needsReload
 
   useEffect(() => {
     if (complete) {
       setFade(true)
-      const timer = setTimeout(() => setHidden(true), 1200)
+      const timer = setTimeout(() => {
+        setHidden(true)
+        setNeedsReload(false)
+      }, 1200)
       return () => clearTimeout(timer)
     }
-  }, [complete])
+  }, [complete, setNeedsReload])
 
   if (hidden) return null
 
@@ -274,10 +282,25 @@ function Scene() {
   const [textDirection, setTextDirection] = useState<'in' | 'out'>('in')
   const [textAnimKey, setTextAnimKey] = useState(0)
 
+  const [needsReload, setNeedsReload] = useState(false)
+
   // ─── Mobile viewport detection ─────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth < 768)
+    let resizeTimer: number
+    const onResize = () => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        const currentlyMobile = window.innerWidth < 768
+        setIsMobile(prev => {
+          if (prev !== currentlyMobile) {
+            setNeedsReload(true)
+            return currentlyMobile
+          }
+          return prev
+        })
+      }, 150)
+    }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
@@ -503,10 +526,9 @@ function Scene() {
     async function loadSlideImages() {
       const canvases = await Promise.all(
         SLIDES.map(async (slide: any) => {
-          const size = isMobile ? 1024 : 2048
           const canvas = document.createElement('canvas')
-          canvas.width = size
-          canvas.height = size
+          canvas.width = 2048
+          canvas.height = 2048
           const ctx = canvas.getContext('2d')!
 
           if (slide.labelImage) {
@@ -522,15 +544,15 @@ function Scene() {
             } else {
               ctx.filter = 'none'
             }
-            ctx.drawImage(img, 0, 0, size, size)
+            ctx.drawImage(img, 0, 0, 2048, 2048)
           } else if (slide.labelGradient) {
             // Fallback: gradient
-            const grad = ctx.createLinearGradient(0, 0, size, size)
+            const grad = ctx.createLinearGradient(0, 0, 2048, 2048)
             grad.addColorStop(0, slide.labelGradient[0])
             grad.addColorStop(0.5, slide.labelGradient[1])
             grad.addColorStop(1, slide.labelGradient[2])
             ctx.fillStyle = grad
-            ctx.fillRect(0, 0, size, size)
+            ctx.fillRect(0, 0, 2048, 2048)
           }
 
           return canvas
@@ -598,7 +620,7 @@ function Scene() {
         progress={transitionProgress}
       />
 
-      <Preloader isReady={slideCanvases.length > 0} />
+      <Preloader isReady={slideCanvases.length > 0} needsReload={needsReload} setNeedsReload={setNeedsReload} />
 
       <div
         className="app-ui-container"
@@ -678,7 +700,7 @@ function Scene() {
                   rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
                   rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
                 >
-                  <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} isMobile={isMobile} />
+                  <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
                   <PresentationControls
                     key={spinCount}
                     global={false}
@@ -695,10 +717,7 @@ function Scene() {
                 </animated.group>
                 {/* Water spiral is independent of slide spin transitions */}
                 <WaterSpiral
-                  spiralControls={{
-                    ...waterSpiralSettings,
-                    waterResolution: isMobile ? Math.min(waterSpiralSettings.waterResolution as unknown as number, 50) : waterSpiralSettings.waterResolution
-                  }}
+                  spiralControls={waterSpiralSettings}
                   materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
                   globalBg={slide.bgColor || '#000000'}
                 />
