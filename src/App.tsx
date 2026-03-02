@@ -279,7 +279,7 @@ function Scene() {
   console.log("--- DEBUG INIT ---", { loadedWaterX: getSaved('waterPositionX', 6.199999999999999) })
 
   const canSettings = useControls('Can Animation & Position', {
-    canRotation: { value: getSaved('canRotation', [7.9,2.7,3.1]), step: 0.1 },
+    canRotation: { value: getSaved('canRotation', [7.9, 2.7, 3.1]), step: 0.1 },
     canPositionX: { value: 0, min: -10, max: 10, step: 0.1 },
     canPositionY: { value: getSaved('canPositionY', 0.3), min: -10, max: 10, step: 0.1 },
     canScale: { value: getSaved('canScale', 0.5), min: 0.1, max: 5, step: 0.05 },
@@ -296,12 +296,12 @@ function Scene() {
   const lightSettings = useControls('Area Lights', {
     light1Color: getSaved('light1Color', "#ffffff"),
     light1Intensity: { value: getSaved('light1Intensity', 16.5), min: 0, max: 50 },
-    light1Pos: { value: getSaved('light1Pos', [-10.5,15,7]), step: 0.5 },
-    light1Scale: { value: getSaved('light1Scale', [5,5]), step: 0.5 },
+    light1Pos: { value: getSaved('light1Pos', [-10.5, 15, 7]), step: 0.5 },
+    light1Scale: { value: getSaved('light1Scale', [5, 5]), step: 0.5 },
     light2Color: getSaved('light2Color', "#ffffff"),
     light2Intensity: { value: getSaved('light2Intensity', 29.5), min: 0, max: 50 },
-    light2Pos: { value: getSaved('light2Pos', [-4,-8,13]), step: 0.5 },
-    light2Scale: { value: getSaved('light2Scale', [5,5]), step: 0.5 },
+    light2Pos: { value: getSaved('light2Pos', [-4, -8, 13]), step: 0.5 },
+    light2Scale: { value: getSaved('light2Scale', [5, 5]), step: 0.5 },
   })
 
   const { light1Color, light1Intensity, light1Pos, light1Scale, light2Color, light2Intensity, light2Pos, light2Scale } = lightSettings
@@ -312,7 +312,7 @@ function Scene() {
       value: getSaved('envPreset', "studio")
     },
     envIntensity: { value: getSaved('envIntensity', 0.2), min: 0, max: 5 },
-    envRotation: { value: getSaved('envRotation', [13.2,4.7,-0.8]), step: 0.1 }
+    envRotation: { value: getSaved('envRotation', [13.2, 4.7, -0.8]), step: 0.1 }
   })
 
   const { envPreset, envIntensity, envRotation } = envSettings
@@ -333,7 +333,7 @@ function Scene() {
     waterHeight: { value: getSaved('waterHeight', 1.33), min: 0.1, max: 5.0, step: 0.01 },
     waterSpeed: { value: getSaved('waterSpeed', 0.2799999999999999), min: 0, max: 10.0, step: 0.01 },
     waterMarchingScale: { value: getSaved('waterMarchingScale', 8), min: 1, max: 100, step: 0.5 },
-    waterResolution: { value: getSaved('waterResolution', 131), min: 20, max: 150, step: 1 },
+    waterResolution: { value: getSaved('waterResolution', 84), min: 20, max: 150, step: 1 },
     waterIsolation: { value: getSaved('waterIsolation', 104), min: 10, max: 500, step: 1 },
     waterBlobStrength: { value: getSaved('waterBlobStrength', 0.11), min: 0.01, max: 2.0, step: 0.01 },
     waterBlobSubtract: { value: getSaved('waterBlobSubtract', 9), min: 0, max: 100, step: 1 },
@@ -581,7 +581,7 @@ function Scene() {
         } as React.CSSProperties}
       >
         {/* Layer 1: Typography flanking the can */}
-        <div className="typography-wrapper">
+        <div className="scene-container">
           <div className={`text-left ${textAnimClass}`}>
             <AnimatedText
               as="h1"
@@ -615,56 +615,58 @@ function Scene() {
         </div>
 
         {/* Layer 5: 3D Canvas (transparent, can only) */}
-        <Canvas camera={{ position: [0, 0, 12], fov: isMobile ? 55 : 45 }} gl={{ alpha: true }} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, pointerEvents: 'auto' }}>
+        <div className="scene-container" style={{ zIndex: 5 }}>
+          <Canvas camera={{ position: [0, 0, 12], fov: isMobile ? 55 : 45 }} gl={{ alpha: true, antialias: true }} dpr={[1, 1.5]} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
 
-          <ambientLight intensity={0.5} />
-          <rectAreaLight
-            position={light1Pos as [number, number, number]}
-            width={(light1Scale as any)[0]} height={(light1Scale as any)[1]}
-            intensity={light1Intensity as unknown as number} color={light1Color as string}
-            lookAt={[canPositionX as unknown as number, 0, 0] as any}
-          />
-          <rectAreaLight
-            position={light2Pos as [number, number, number]}
-            width={(light2Scale as any)[0]} height={(light2Scale as any)[1]}
-            intensity={light2Intensity as unknown as number} color={light2Color as string}
-            lookAt={[canPositionX as unknown as number, 0, 0] as any}
-          />
+            <ambientLight intensity={0.5} />
+            <rectAreaLight
+              position={light1Pos as [number, number, number]}
+              width={(light1Scale as any)[0]} height={(light1Scale as any)[1]}
+              intensity={light1Intensity as unknown as number} color={light1Color as string}
+              lookAt={[canPositionX as unknown as number, 0, 0] as any}
+            />
+            <rectAreaLight
+              position={light2Pos as [number, number, number]}
+              width={(light2Scale as any)[0]} height={(light2Scale as any)[1]}
+              intensity={light2Intensity as unknown as number} color={light2Color as string}
+              lookAt={[canPositionX as unknown as number, 0, 0] as any}
+            />
 
-          <Environment preset={envPreset as any} environmentIntensity={envIntensity as unknown as number} environmentRotation={envRotation as any} />
+            <Environment preset={envPreset as any} environmentIntensity={envIntensity as unknown as number} environmentRotation={envRotation as any} />
 
-          {/* Floating and spinning */}
-          <Float speed={floatSpeed as unknown as number} rotationIntensity={1} floatIntensity={floatIntensity as unknown as number} floatingRange={[-0.5, 0.5]}>
-            <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={isMobile ? 0.30 : (canScale as unknown as number)}>
-              <animated.group
-                rotation-x={SPIN_AXIS === 'x' ? spinY : 0}
-                rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
-                rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
-              >
-                <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
-                <PresentationControls
-                  key={spinCount}
-                  global={false}
-                  cursor={true}
-                  snap={false}
-                  speed={dragSpeed as unknown as number}
-                  zoom={1}
-                  polar={[0, 0]}
+            {/* Floating and spinning */}
+            <Float speed={floatSpeed as unknown as number} rotationIntensity={1} floatIntensity={floatIntensity as unknown as number} floatingRange={[-0.5, 0.5]}>
+              <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={isMobile ? 0.30 : (canScale as unknown as number)}>
+                <animated.group
+                  rotation-x={SPIN_AXIS === 'x' ? spinY : 0}
+                  rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
+                  rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
                 >
-                  <group rotation={canRotation as [number, number, number]}>
-                    <HydrationCan labelTexture={texture} />
-                  </group>
-                </PresentationControls>
-              </animated.group>
-              {/* Water spiral is independent of slide spin transitions */}
-              <WaterSpiral
-                spiralControls={waterSpiralSettings}
-                materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
-                globalBg={slide.bgColor || '#000000'}
-              />
-            </group>
-          </Float>
-        </Canvas>
+                  <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
+                  <PresentationControls
+                    key={spinCount}
+                    global={false}
+                    cursor={true}
+                    snap={false}
+                    speed={dragSpeed as unknown as number}
+                    zoom={1}
+                    polar={[0, 0]}
+                  >
+                    <group rotation={canRotation as [number, number, number]}>
+                      <HydrationCan labelTexture={texture} />
+                    </group>
+                  </PresentationControls>
+                </animated.group>
+                {/* Water spiral is independent of slide spin transitions */}
+                <WaterSpiral
+                  spiralControls={waterSpiralSettings}
+                  materialControls={{ ...waterMaterialSettings, waterColor: slide.waterColor || waterMaterialSettings.waterColor }}
+                  globalBg={slide.bgColor || '#000000'}
+                />
+              </group>
+            </Float>
+          </Canvas>
+        </div>
 
         {/* Navigation / CTA Group (bottom-center) */}
         <div className="bottom-nav-group">
