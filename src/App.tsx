@@ -241,6 +241,14 @@ function Scene() {
   const [textDirection, setTextDirection] = useState<'in' | 'out'>('in')
   const [textAnimKey, setTextAnimKey] = useState(0)
 
+  // ─── Mobile viewport detection ─────────────────────────────────────
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   // Load saved settings from local storage
   // Clear legacy cached canPositionX so centering takes effect
   useEffect(() => {
@@ -607,7 +615,7 @@ function Scene() {
         </div>
 
         {/* Layer 5: 3D Canvas (transparent, can only) */}
-        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} gl={{ alpha: true }} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, pointerEvents: 'auto' }}>
+        <Canvas camera={{ position: [0, 0, 12], fov: isMobile ? 55 : 45 }} gl={{ alpha: true }} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5, pointerEvents: 'auto' }}>
 
           <ambientLight intensity={0.5} />
           <rectAreaLight
@@ -627,7 +635,7 @@ function Scene() {
 
           {/* Floating and spinning */}
           <Float speed={floatSpeed as unknown as number} rotationIntensity={1} floatIntensity={floatIntensity as unknown as number} floatingRange={[-0.5, 0.5]}>
-            <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={canScale as unknown as number}>
+            <group position={[canPositionX as unknown as number, canPositionY as unknown as number, 0]} scale={isMobile ? 0.35 : (canScale as unknown as number)}>
               <animated.group
                 rotation-x={SPIN_AXIS === 'x' ? spinY : 0}
                 rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
