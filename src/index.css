@@ -315,8 +315,8 @@ input[type="file"] {
   position: absolute;
   top: var(--text-side-padding, 40px);
   left: var(--text-side-padding, 40px);
-  z-index: 100;
-  pointer-events: none;
+  z-index: 1000;
+  pointer-events: auto;
   opacity: 0.9;
 }
 
@@ -326,6 +326,7 @@ input[type="file"] {
 }
 
 .app-credits {
+  display: none;
   position: absolute;
   top: var(--text-side-padding, 40px);
   right: var(--text-side-padding, 40px);

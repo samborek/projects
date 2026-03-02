@@ -48,8 +48,8 @@ export function HydrationCan({ labelTexture, ...props }: any) {
   const getSaved = (key: string, defaultVal: any) => savedSettings[key] !== undefined ? savedSettings[key] : defaultVal
 
   const canMaterialProps = useControls('Can Material', {
-    materialType: { options: ['Physical', 'Matcap'], value: getSaved('materialType', 'Physical') },
-    color: getSaved('color', '#111111') as string,
+    materialType: { options: ['Physical', 'Matcap'], value: getSaved('materialType', "Physical") },
+    color: getSaved('color', "#111111") as string,
     metalness: { value: getSaved('metalness', 0.9) as number, min: 0, max: 1 },
     roughness: { value: getSaved('roughness', 0.3) as number, min: 0, max: 1 },
     clearcoat: { value: getSaved('clearcoat', 0.2) as number, min: 0, max: 1 },
@@ -58,33 +58,33 @@ export function HydrationCan({ labelTexture, ...props }: any) {
     ior: { value: getSaved('ior', 1.5) as number, min: 1, max: 2.33 },
     thickness: { value: getSaved('thickness', 0) as number, min: 0, max: 5 },
     sheen: { value: getSaved('sheen', 0) as number, min: 0, max: 1 },
-    sheenColor: getSaved('sheenColor', '#ffffff') as string
+    sheenColor: getSaved('sheenColor', "#ffffff") as string
   })
 
   // Load the matcap texture
   const matcapTexture = useTexture(matcapUrl)
 
   const labelMaterialProps = useControls('Label Material', {
-    roughness: { value: getSaved('labelRoughness', 0.4) as number, min: 0, max: 1 },
-    metalness: { value: getSaved('labelMetalness', 0.1) as number, min: 0, max: 1 },
-    condensation: { value: getSaved('condensation', 0.12) as number, min: 0, max: 2 },
+    roughness: { value: getSaved('labelRoughness', 0.2) as number, min: 0, max: 1 },
+    metalness: { value: getSaved('labelMetalness', 0.18) as number, min: 0, max: 1 },
+    condensation: { value: getSaved('condensation', 0.5) as number, min: 0, max: 2 },
   })
 
   const bumpProps = useControls('Condensation Bump Map', {
-    amount: { value: getSaved('condAmount', 3400) as number, min: 0, max: 30000, step: 100 },
+    amount: { value: getSaved('condAmount', 1500) as number, min: 0, max: 30000, step: 100 },
     size: { value: getSaved('condSize', 1) as number, min: 0.1, max: 10, step: 0.1 },
     streakChance: { value: getSaved('condStreakChance', 0) as number, min: 0, max: 0.5, step: 0.01 },
     streakLength: { value: getSaved('condStreakLength', 5) as number, min: 5, max: 150, step: 1 },
-    gradientAngle: { value: getSaved('condGradientAngle', 90) as number, min: 0, max: 360, step: 1 },
-    fadeStart: { value: getSaved('condFadeStart', 0.07) as number, min: 0, max: 1, step: 0.01 },
-    fadeEnd: { value: getSaved('condFadeEnd', 0.6) as number, min: 0, max: 1, step: 0.01 },
-    noiseType: { options: ['None', 'Simplex Soft', 'Simplex Sparse'], value: getSaved('condNoiseType', 'Simplex Sparse') },
-    noiseScale: { value: getSaved('condNoiseScale', 9.9) as number, min: 0.1, max: 20, step: 0.1 },
+    gradientAngle: { value: getSaved('condGradientAngle', 109) as number, min: 0, max: 360, step: 1 },
+    fadeStart: { value: getSaved('condFadeStart', 0.69) as number, min: 0, max: 1, step: 0.01 },
+    fadeEnd: { value: getSaved('condFadeEnd', 0.31) as number, min: 0, max: 1, step: 0.01 },
+    noiseType: { options: ['None', 'Simplex Soft', 'Simplex Sparse'], value: getSaved('condNoiseType', "Simplex Sparse") },
+    noiseScale: { value: getSaved('condNoiseScale', 9.200000000000001) as number, min: 0.1, max: 20, step: 0.1 },
   })
 
   const dropletProps = useControls('3D Droplets', {
     amount: { value: getSaved('dropAmount', 2400) as number, min: 0, max: 30000, step: 100 },
-    size: { value: getSaved('dropSize', 0.8) as number, min: 0.1, max: 10, step: 0.1 },
+    size: { value: getSaved('dropSize', 1) as number, min: 0.1, max: 10, step: 0.1 },
     dropHeight: { value: getSaved('condDropHeight', 0.4) as number, min: 0.05, max: 2, step: 0.05 },
     surfaceDistance: { value: getSaved('condSurfaceDistance', 0) as number, min: -0.01, max: 0.01, step: 0.0001 },
     streakChance: { value: getSaved('dropStreakChance', 0) as number, min: 0, max: 0.5, step: 0.01 },
@@ -92,11 +92,11 @@ export function HydrationCan({ labelTexture, ...props }: any) {
     gradientAngle: { value: getSaved('dropGradientAngle', 90) as number, min: 0, max: 360, step: 1 },
     fadeStart: { value: getSaved('dropFadeStart', 0.29) as number, min: 0, max: 1, step: 0.01 },
     fadeEnd: { value: getSaved('dropFadeEnd', 1) as number, min: 0, max: 1, step: 0.01 },
-    noiseType: { options: ['None', 'Simplex Soft', 'Simplex Sparse'], value: getSaved('dropNoiseType', 'Simplex Soft') },
+    noiseType: { options: ['None', 'Simplex Soft', 'Simplex Sparse'], value: getSaved('dropNoiseType', "Simplex Soft") },
     noiseScale: { value: getSaved('dropNoiseScale', 2) as number, min: 0.1, max: 20, step: 0.1 },
-    roughness: { value: getSaved('condRoughness', 0.47) as number, min: 0, max: 1, step: 0.01 },
+    roughness: { value: getSaved('condRoughness', 0.22000000000000006) as number, min: 0, max: 1, step: 0.01 },
     metalness: { value: getSaved('condMetalness', 0) as number, min: 0, max: 1, step: 0.01 },
-    ior: { value: getSaved('condIor', 1.11) as number, min: 1, max: 2.33, step: 0.01 },
+    ior: { value: getSaved('condIor', 1.15) as number, min: 1, max: 2.33, step: 0.01 },
     transmission: { value: getSaved('condTransmission', 1) as number, min: 0, max: 1, step: 0.01 },
   })
 

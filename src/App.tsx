@@ -180,7 +180,7 @@ function LiquidTexture({ prevSlide, currentSlide, progress, slideCanvases, setTe
 // ─── Branding Components ─────────────────────────────────────────────
 function Logo() {
   return (
-    <div className="app-logo">
+    <a href="https://hydration.net/" target="_blank" rel="noopener noreferrer" className="app-logo">
       <svg width="101" height="20" viewBox="0 0 101 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_6210_11896)">
           <path d="M36.3546 15.5858C36.3546 15.7123 36.2594 15.7756 36.0524 15.7603C34.908 15.697 33.987 15.697 32.8427 15.7603C32.6357 15.7756 32.5404 15.7123 32.5404 15.5858C32.5404 15.5073 32.6357 15.4114 32.8263 15.3328C33.0967 15.222 33.1603 14.969 33.1603 14.3361V10.9818H28.3174V14.3361C28.3174 14.9696 28.381 15.2227 28.6514 15.3328C28.842 15.4114 28.9373 15.5073 28.9373 15.5858C28.9373 15.7123 28.842 15.7756 28.635 15.7603C27.4907 15.697 26.5696 15.697 25.4253 15.7603C25.2183 15.7756 25.123 15.7123 25.123 15.5858C25.123 15.5073 25.2183 15.4277 25.3935 15.3328C25.6957 15.2216 25.7429 14.969 25.7429 14.3361V5.71157C25.7429 5.07906 25.6957 4.82504 25.3935 4.71486C25.2183 4.63529 25.123 4.54041 25.123 4.46186C25.123 4.33535 25.2183 4.2721 25.4253 4.28741C26.5696 4.35066 27.4907 4.35066 28.635 4.28741C28.842 4.2721 28.9373 4.33535 28.9373 4.46186C28.9373 4.54143 28.842 4.63631 28.6514 4.71486C28.381 4.82504 28.3174 5.07906 28.3174 5.71157V10.3319H33.1603V5.71157C33.1603 5.07906 33.0967 4.82504 32.8263 4.71486C32.6357 4.63529 32.5404 4.54041 32.5404 4.46186C32.5404 4.33535 32.6357 4.2721 32.8427 4.28741C33.987 4.35066 34.908 4.35066 36.0524 4.28741C36.2594 4.2721 36.3546 4.33535 36.3546 4.46186C36.3546 4.54143 36.2594 4.63631 36.0688 4.71486C35.7983 4.82504 35.7348 5.07906 35.7348 5.71157V14.3351C35.7348 14.9686 35.7983 15.2216 36.0688 15.3318C36.2594 15.4104 36.3546 15.5063 36.3546 15.5848V15.5858Z" fill="white" />
@@ -200,7 +200,7 @@ function Logo() {
           </clipPath>
         </defs>
       </svg>
-    </div>
+    </a>
   )
 }
 
@@ -279,7 +279,7 @@ function Scene() {
   console.log("--- DEBUG INIT ---", { loadedWaterX: getSaved('waterPositionX', 6.199999999999999) })
 
   const canSettings = useControls('Can Animation & Position', {
-    canRotation: { value: getSaved('canRotation', [7.9, 2.7, 3.1]), step: 0.1 },
+    canRotation: { value: getSaved('canRotation', [7.9,2.7,3.1]), step: 0.1 },
     canPositionX: { value: 0, min: -10, max: 10, step: 0.1 },
     canPositionY: { value: getSaved('canPositionY', 0.3), min: -10, max: 10, step: 0.1 },
     canScale: { value: getSaved('canScale', 0.5), min: 0.1, max: 5, step: 0.05 },
@@ -294,14 +294,14 @@ function Scene() {
   const { canRotation, canPositionX, canPositionY, canScale, floatSpeed, floatIntensity, textPadding, dragSpeed, textLineHeight, textSidePadding } = canSettings
 
   const lightSettings = useControls('Area Lights', {
-    light1Color: getSaved('light1Color', '#ffffff'),
+    light1Color: getSaved('light1Color', "#ffffff"),
     light1Intensity: { value: getSaved('light1Intensity', 16.5), min: 0, max: 50 },
-    light1Pos: { value: getSaved('light1Pos', [-10.5, 15, 7]), step: 0.5 },
-    light1Scale: { value: getSaved('light1Scale', [5, 5]), step: 0.5 },
-    light2Color: getSaved('light2Color', '#ffffff'),
+    light1Pos: { value: getSaved('light1Pos', [-10.5,15,7]), step: 0.5 },
+    light1Scale: { value: getSaved('light1Scale', [5,5]), step: 0.5 },
+    light2Color: getSaved('light2Color', "#ffffff"),
     light2Intensity: { value: getSaved('light2Intensity', 29.5), min: 0, max: 50 },
-    light2Pos: { value: getSaved('light2Pos', [-4, -8, 13]), step: 0.5 },
-    light2Scale: { value: getSaved('light2Scale', [5, 5]), step: 0.5 },
+    light2Pos: { value: getSaved('light2Pos', [-4,-8,13]), step: 0.5 },
+    light2Scale: { value: getSaved('light2Scale', [5,5]), step: 0.5 },
   })
 
   const { light1Color, light1Intensity, light1Pos, light1Scale, light2Color, light2Intensity, light2Pos, light2Scale } = lightSettings
@@ -309,10 +309,10 @@ function Scene() {
   const envSettings = useControls('Environment & Background', {
     envPreset: {
       options: ['apartment', 'city', 'dawn', 'forest', 'lobby', 'night', 'park', 'studio', 'sunset', 'warehouse'],
-      value: getSaved('envPreset', 'studio')
+      value: getSaved('envPreset', "studio")
     },
     envIntensity: { value: getSaved('envIntensity', 0.2), min: 0, max: 5 },
-    envRotation: { value: getSaved('envRotation', [13.2, 4.7, -0.8]), step: 0.1 }
+    envRotation: { value: getSaved('envRotation', [13.2,4.7,-0.8]), step: 0.1 }
   })
 
   const { envPreset, envIntensity, envRotation } = envSettings
@@ -329,7 +329,7 @@ function Scene() {
   const waterSpiralSettings = useControls('Water Spiral', {
     waterVisible: getSaved('waterVisible', true),
     waterNumDroplets: { value: getSaved('waterNumDroplets', 83), min: 10, max: 400, step: 1 },
-    waterRadius: { value: getSaved('waterRadius', 0.39999999999999997), min: 0.01, max: 2.0, step: 0.01 },
+    waterRadius: { value: getSaved('waterRadius', 0.42), min: 0.01, max: 2.0, step: 0.01 },
     waterHeight: { value: getSaved('waterHeight', 1.33), min: 0.1, max: 5.0, step: 0.01 },
     waterSpeed: { value: getSaved('waterSpeed', 0.2799999999999999), min: 0, max: 10.0, step: 0.01 },
     waterMarchingScale: { value: getSaved('waterMarchingScale', 8), min: 1, max: 100, step: 0.5 },
@@ -342,13 +342,13 @@ function Scene() {
     waterSpiralTwists: { value: getSaved('waterSpiralTwists', 1.7), min: 0.1, max: 20, step: 0.1 },
     waterPositionX: { value: getSaved('waterPositionX', 6.199999999999999), min: -50, max: 50, step: 0.1 },
     waterPositionY: { value: getSaved('waterPositionY', 5.8999999999999995), min: -50, max: 50, step: 0.1 },
-    waterPositionZ: { value: getSaved('waterPositionZ', 8.299999999999999), min: -50, max: 50, step: 0.1 },
+    waterPositionZ: { value: getSaved('waterPositionZ', 7.099999999999999), min: -50, max: 50, step: 0.1 },
     waterDistortionStrength: { value: getSaved('waterDistortionStrength', 0), min: 0, max: 50.0, step: 0.1 },
     waterDistortionArea: { value: getSaved('waterDistortionArea', 0.05), min: 0.01, max: 2.0, step: 0.01 },
   })
 
   const waterMaterialSettings = useControls('Water Material', {
-    waterColor: getSaved('waterColor', '#ffffff'),
+    waterColor: getSaved('waterColor', "#ffffff"),
     waterTransmission: { value: getSaved('waterTransmission', 1), min: 0, max: 1, step: 0.01 },
     waterRoughness: { value: getSaved('waterRoughness', 0.02), min: 0, max: 1, step: 0.01 },
     waterMetalness: { value: getSaved('waterMetalness', 0), min: 0, max: 1, step: 0.01 },
@@ -358,8 +358,8 @@ function Scene() {
     waterClearcoat: { value: getSaved('waterClearcoat', 0.6), min: 0, max: 1, step: 0.01 },
     waterClearcoatRoughness: { value: getSaved('waterClearcoatRoughness', 0), min: 0, max: 1, step: 0.01 },
     waterSpecularIntensity: { value: getSaved('waterSpecularIntensity', 2), min: 0, max: 10, step: 0.1 },
-    waterSpecularColor: getSaved('waterSpecularColor', '#f7edff'),
-    waterAttenuationColor: getSaved('waterAttenuationColor', '#b5ddff'),
+    waterSpecularColor: getSaved('waterSpecularColor', "#f7edff"),
+    waterAttenuationColor: getSaved('waterAttenuationColor', "#b5ddff"),
     waterAttenuationDistance: { value: getSaved('waterAttenuationDistance', 30), min: 0.1, max: 100, step: 0.5 },
     waterOpacity: { value: getSaved('waterOpacity', 0.86), min: 0, max: 1, step: 0.01 },
     waterTransparent: getSaved('waterTransparent', true),
@@ -641,7 +641,9 @@ function Scene() {
                 rotation-y={SPIN_AXIS === 'y' ? spinY : 0}
                 rotation-z={SPIN_AXIS === 'z' ? spinY : 0}
               >
+                <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
                 <PresentationControls
+                  key={spinCount}
                   global={false}
                   cursor={true}
                   snap={false}
@@ -650,7 +652,6 @@ function Scene() {
                   polar={[0, 0]}
                 >
                   <group rotation={canRotation as [number, number, number]}>
-                    <LiquidTexture prevSlide={prevSlide} currentSlide={currentSlide} progress={transitionProgress} slideCanvases={slideCanvases} setTexture={setTexture} />
                     <HydrationCan labelTexture={texture} />
                   </group>
                 </PresentationControls>
@@ -671,7 +672,7 @@ function Scene() {
             <svg viewBox="0 0 25 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 19l-7-7 7-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
           </button>
 
-          <a href={slide.footerUrl || '#'} className="cta-button" target="_blank" rel="noopener noreferrer">
+          <a href="https://next-hydration.netlify.app/liquidity?type=all&myLiquidity=false&omniSort=%5B%7B%22id%22:%22id%22,%22desc%22:true%7D%5D&isolatedSort=%5B%7B%22id%22:%22tvlDisplay%22,%22desc%22:true%7D%5D" className="cta-button" target="_blank" rel="noopener noreferrer">
             {(slide.footer || '').replace(/\n/g, ' ')}
           </a>
 
